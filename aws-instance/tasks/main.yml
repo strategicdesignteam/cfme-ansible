@@ -4,7 +4,6 @@
 
 - name: Provision AWS instance
   ec2:
-    state: "{{ state }}"
     region: "{{ region }}"
     key_name: "{{ key_name }}"
     instance_type: "{{ aws_instance_type }}"
