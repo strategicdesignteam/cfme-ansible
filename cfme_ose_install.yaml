@@ -1,8 +1,24 @@
 
 
+
+
+- name: Setup CFME requirements on Openshift
+  hosts: tag_Name_ose_master01_strategicdesign_io
+  become: yes
+
+  roles:
+    - { role: cfme-ose-setup }
+
 - name: Install CFME as a docker container
   hosts: tag_Name_cfme01
   become: yes
 
   roles:
     - { role: cfme-container, rhsm_user: "{{ rhsm_user }}", rhsm_password: "{{ rhsm_password }}"}
+
+- name: Configure Openshift as a CFME provider
+  hosts: localhost
+  gather_facts: no
+
+  roles:
+    - { role: cfme-ose-provider, token: "{{ hostvar['ose_master01_strategicdesign_io']['token'] }}", miq_url: "https://{{ hostvar['cfme01']['ec2_ip_address']}}"}

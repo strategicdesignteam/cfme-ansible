@@ -1,0 +1,27 @@
+---
+# tasks file for cfme-ose-setup
+
+- name: Run OSE setup script
+  script: ose-setup.sh
+  register: result
+
+- debug: var=result.stdout
+
+## Insert in /etc/origin/master/master-config.yaml
+# metricsPublicURL: https://openshift-master.strategicdesign.io/hawkular/metrics
+
+- name: Restart Openshift master API service
+  systemd: state=restarted name=atomic-openshift-master-api
+
+- name: Restart Openshift master controllers service
+  systemd: state=restarted name=atomic-openshift-master-controllers
+
+- name: Get Openshift token
+  command: oc sa get-token -n management-infra management-admin
+  register: token
+
+- debug: var=token.stdout
+
+- name: Set token as an Openshift fact
+  set_fact:
+    token: "{{ token.stdout }}"
