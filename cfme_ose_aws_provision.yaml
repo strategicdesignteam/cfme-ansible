@@ -5,3 +5,4 @@
 
   roles:
     - { role: aws-instance, exact_count: 1}
+    - { role: cfme-container }

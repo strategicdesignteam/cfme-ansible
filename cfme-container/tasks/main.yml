@@ -1,2 +1,57 @@
 ---
 # tasks file for cfme-container
+
+  - name: subscription manager
+    redhat_subscription:
+      state: present
+      username: "{{ rhsm_user }}"
+      password: "{{ rhsm_password }}"
+      pool: '^Employee SKU$'
+    register: sm
+
+  - name: disable Employee sku repos
+    command: subscription-manager repos --disable=*
+    when: sm.changed == true
+
+  - name: enable required repos
+    command: subscription-manager repos --enable rhel-7-server-rpms --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms
+    when: sm.changed == true
+
+  - name: install required packages
+    yum:
+      name: '{{ item }}'
+      state: present
+    with_items:
+    - docker
+    - python
+    - python-docker-py
+
+  - name: Start and enable docker service
+    service:
+      state: started
+      enabled: yes
+      name: docker
+
+  - name: Launch Cloudforms container
+    docker_container:
+      name: cfme4
+      image: registry.access.redhat.com/cloudforms/cfme4
+      privileged: yes
+      restart_policy: always
+      published_ports:
+      - 80:80
+      - 443:443
+
+  - debug: var=hostvars[inventory_hostname].ec2_ip_address
+
+  - name: Wait for Cloudforms service to be ready
+    uri:
+      url: "https://{{ hostvars[inventory_hostname].ec2_ip_address }}"
+      status_code: 200
+      validate_certs: false
+    register: result
+    until: result.status == 200
+    retries: 60
+    delay: 60
+
+  - debug: var=result
