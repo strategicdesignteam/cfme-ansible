@@ -4,4 +4,4 @@
   gather_facts: no
 
   roles:
-    - { role: aws-instance, state: 'absent'}
+    - { role: aws-instance, exact_count: 0}
