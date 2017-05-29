@@ -21,4 +21,4 @@
   gather_facts: no
 
   roles:
-    - { role: cfme-ose-provider, token: "{{ hostvar['ose_master01_strategicdesign_io']['token'] }}", miq_url: "https://{{ hostvar['cfme01']['ec2_ip_address']}}"}
+    - { role: cfme-ose-provider, token: "{{ hostvars['ose_master01_strategicdesign_io']['token'] }}", miq_url: "https://{{ hostvars['cfme01']['ec2_ip_address']}}"}
