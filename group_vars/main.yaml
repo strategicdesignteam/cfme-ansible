@@ -1,0 +1,11 @@
+
+
+# aws-instance role variables
+instance_name: cfme01
+region: us-east-1
+security_group: tower-sg-1
+vpc_subnet_id: subnet-920ce1be
+key_name: OSE-key
+aws_image: ami-b63769a1
+aws_instance_type: t2.large
+public_ip: yes
