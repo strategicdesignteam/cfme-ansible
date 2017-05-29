@@ -19,7 +19,7 @@
 - name: Configure Openshift as a CFME provider
   hosts: localhost
   gather_facts: no
-  become: yes
+  become: no
 
   roles:
     - { role: cfme-ose-provider, token: "{{ hostvars['ose_master01_strategicdesign_io']['token'] }}", miq_url: "https://{{ hostvars['cfme01']['ec2_ip_address']}}"}
