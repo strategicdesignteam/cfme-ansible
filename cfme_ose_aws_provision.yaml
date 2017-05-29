@@ -1,8 +1,16 @@
 
 
-- hosts: localhost
+- name: Provision AWS instance
+  hosts: localhost
   gather_facts: no
 
   roles:
     - { role: aws-instance, exact_count: 1}
-    - { role: cfme-container }
+
+
+- name: Install CFME as a docker container
+  hosts: tag_Name_cfme01
+  become: yes
+
+  roles:
+    - { role: cfme-container, rhsm_user: "{{ rhsm_user }}", rhsm_password: "{{ rhsm_password }}"}
