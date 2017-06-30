@@ -34,8 +34,8 @@
 
   - name: Launch Cloudforms container
     docker_container:
-      name: cfme4
-      image: registry.access.redhat.com/cloudforms/cfme4
+      name: cfme42
+      image: registry.access.redhat.com/cloudforms42/cfme
       privileged: yes
       restart_policy: always
       published_ports:
