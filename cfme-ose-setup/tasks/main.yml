@@ -11,6 +11,4 @@
 - name: Set token as an Openshift fact
   set_fact:
     token: "{{ token.stdout }}"
-    
-- name: Sleep for 3 minutes to allow instance to come up
-  command: sleep 180
+
