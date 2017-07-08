@@ -28,3 +28,6 @@
     timeout: 320
     state: started
   with_items: "{{ ec2.instances }}"
+
+- name: Sleep for 5 minutes to allow instance to come up
+  command: sleep 300
